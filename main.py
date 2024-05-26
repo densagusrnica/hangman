@@ -15,6 +15,30 @@ def draw_square(topleftpoint, lenedge):
     draw_line(points[2], points[3])
     draw_line(points[3], points[0])
 
+def draw_secret(word):
+    lenedge = 100
+    interval = 20
+    wordwidth = len(word) * lenedge + interval * (len(word) - 1)
+    startpoint = [ -wordwidth // 2, -250]
+    for x in range (len(word)):
+        draw_square(startpoint, lenedge)
+        startpoint[0] += interval + lenedge
+
+def draw_alphabet():
+    global alphabetDict
+    alphabet = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    x = 100
+    y = 250
+    fontSize = 40
+    for k in range(len(alphabet)):
+        goto(x, y)
+        char = alphabet[k]
+        write(char, align = 'center', font = ("Comic Sans MS", fontSize, "bold"))
+        alphabetDict[char] = (x, y + fontSize // 2)
+        x += 100
+        if x >= 500:
+            x = 100
+            y -= fontSize * 2
 
 def draw_line(point1, point2):
     penup()
@@ -34,6 +58,7 @@ def draw_circle(point1, radius):
 
 Screen().setup(1000, 800)
 
+alphabetDict = {}
 shape("classic")
 showturtle()
 
@@ -48,6 +73,6 @@ draw_line((-270, 100),(-330, 30))
 draw_line((-270, 100),(-210, 30))
 draw_line((-270, -40),(-330, -150))
 draw_line((-270, -40),(-210, -150))
-
-
+draw_secret("f")
+draw_alphabet()
 mainloop()
