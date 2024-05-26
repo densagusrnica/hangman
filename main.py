@@ -1,93 +1,53 @@
 from turtle import *
 
-def draw_window(width, height, X = True):
-    pendown()
-    setheading(0)
-    forward(width//2)
-    setheading(90)
-    forward(height)
-    setheading(180)
-    forward(width)
-    setheading(270)
-    forward(height)
-    setheading(0)
-    if X:
-        forward(width//2)
-        setheading(90)
-        forward(height)
-        back(height//2)
-        setheading(0)
-        forward(width//2)
-        back(width)
-        forward(width//2)
-        setheading(270)
-        forward(height//2)
-        setheading(0)
+def draw_square(topleftpoint, lenedge):
+
+    x = topleftpoint[0]
+    y = topleftpoint[1]
+    points = [
+        [x,y],
+        [x + lenedge, y],
+        [x + lenedge, y - lenedge],
+        [x,y - lenedge]
+    ]
+    draw_line(points[0], points[1])
+    draw_line(points[1], points[2])
+    draw_line(points[2], points[3])
+    draw_line(points[3], points[0])
+
+
+def draw_line(point1, point2):
     penup()
+    goto(point1[0], point1[1])
+    pendown()
+    goto(point2[0], point2[1])
+    penup()
+
+
+def draw_circle(point1, radius):
+    penup()
+    goto(point1[0], point1[1])
+    pendown()
+    circle(-radius)
+    penup()
+    goto(point1[0], point1[1]-radius * 2)
 
 Screen().setup(1000, 800)
 
 shape("classic")
 showturtle()
-# goto(0,0)
-# goto(100, 0)
-# penup()
-# goto(100, 100)
-# pendown()
-# goto(200, 100)
-# dot(200, "green")
-#
-# pensize(7)
-# pencolor("blue")
-# goto(200, -200)
-penup()
-goto(0,-900)
-dot(1500, "green")
-color('#E10501', '#DE673C')
-pensize(4)
-goto(200,-250)
-pendown()
-begin_fill()
-goto(-200, -250)
-goto(-200, 50)
-goto(0, 150)
-goto(200,50)
-goto(240, 30)
-goto(240, 50)
-goto(0, 170)
-goto(-240, 50)
-goto(-240, 30)
-goto(0, 150)
-goto(200, 50)
-goto(200,-250)
-end_fill()
-penup()
-goto(0,0)
-draw_window(100,75)
-goto(-125,-150)
-draw_window(100,100)
-goto(125,-150)
-draw_window(100,100)
-goto(0,-250)
-begin_fill()
-color('#E10501', '#E0003E')
-draw_window(100,150, False)
-end_fill()
-color('#E10501', '#DE673C')
-goto(-40, -175)
-dot(15, '#DE673C')
-goto(-350 , 300)
-dot(200, 'yellow')
-goto(200, -250)
-goto(350, -285)
-begin_fill()
-color('#633100', '#633100')
-draw_window(65, 375, False)
-pendown()
-goto(365, -285)
-end_fill()
-goto(350, -285)
-penup()
-goto(350, 90)
-dot(324, "green")
+
+pensize(5)
+draw_line((-400, -180),(-70, -180))
+draw_line((-100, -180),(-100, 280))
+draw_line((-100, 280),(-270, 280))
+draw_line((-270, 280),(-270, 220))
+draw_circle((-270, 220), 50)
+draw_line((-270, 120),(-270, -40))
+draw_line((-270, 100),(-330, 30))
+draw_line((-270, 100),(-210, 30))
+draw_line((-270, -40),(-330, -150))
+draw_line((-270, -40),(-210, -150))
+
+
 mainloop()
