@@ -85,7 +85,6 @@ def draw_secret(word):
         secretCoords.append([startpoint[0] + lenEdge // 2, startpoint[1] - lenEdge])
         startpoint[0] += interval + lenEdge
 
-
 def draw_letter(coord, char, fontSize, fontColor="black"):
     goto(coord)
 
@@ -98,7 +97,6 @@ def draw_letter(coord, char, fontSize, fontColor="black"):
 
     pencolor(oldColor)
     pencolor(oldFillColor)
-
 
 def draw_alphabet():
     global alphabetDict, wait
@@ -122,6 +120,8 @@ def draw_alphabet():
 
 
 def draw_line(point1, point2, penSize=7):
+    global wait
+    wait = True
     oldSize = pen()["pensize"]
     pensize(penSize)
     penup()
@@ -130,7 +130,7 @@ def draw_line(point1, point2, penSize=7):
     goto(point2[0], point2[1])
     penup()
     pensize(oldSize)
-
+    wait = False
 
 def draw_circle(point1, radius, penSize=7):
     oldSize = pen()["pensize"]
@@ -143,25 +143,26 @@ def draw_circle(point1, radius, penSize=7):
     goto(point1[0], point1[1] - radius * 2)
     pensize(oldSize)
 
-
 def get_letter_on_click(x, y):
-    for key, value in alphabetDict.items():
-        charX = value[0]
-        charY = value[1]
-        if abs(charX - x) < 50 and 0 <= (y - charY) < 100:
-            coord = alphabetDict.pop(key)
-            draw_letter(coord, key, 40, "lightgrey")
-            check_letter(key)
-            break
-    for key, value in buttonsDict.items():
-        charX = value[0]
-        charY = value[1]
-        if abs(charX - x) < 90 and 0 <= (y - charY) < 100:
-            if key == "YES":
-                start_game()
-            else:
-                sys.exit()
-            break
+    global wait
+    if wait == False:
+        for key, value in alphabetDict.items():
+            charX = value[0]
+            charY = value[1]
+            if abs(charX - x) < 50 and 0 <= (y - charY) < 50:
+                coord = alphabetDict.pop(key)
+                draw_letter(coord, key, 40, "lightgrey")
+                check_letter(key)
+                break
+        for key, value in buttonsDict.items():
+            charX = value[0]
+            charY = value[1]
+            if abs(charX - x) < 90 and 0 <= (y - charY) < 100:
+                if key == "YES":
+                    start_game()
+                else:
+                    sys.exit()
+                break
 
 
 def check_letter(letter):
@@ -182,7 +183,7 @@ def check_letter(letter):
         draw_error(numError)
 
 
-Screen().setup(1000, 800)
+Screen().setup(1500, 800)
 
 
 def start_game():
@@ -194,9 +195,8 @@ def start_game():
     numError = 0
     countCorrectLetter = 0
     secret = random.choice(words).lower()
-    wait = False
     hideturtle()
-
+    wait = True
     pensize(5)
     speed(0)
 
@@ -210,11 +210,10 @@ secretCoords = []
 numError = 0
 countCorrectLetter = 0
 secret = ""
-wait = False
-
+wait = True
 start_game()
 
-if not wait:
+if wait == False:
     onscreenclick(get_letter_on_click)
 
 mainloop()
